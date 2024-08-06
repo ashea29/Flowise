@@ -10,6 +10,7 @@ import '@/assets/scss/style.scss'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { SnackbarProvider } from 'notistack'
+import { AuthProvider } from '@/store/context/AuthContext'
 import ConfirmContextProvider from '@/store/context/ConfirmContextProvider'
 import { ReactFlowContext } from '@/store/context/ReactFlowContext'
 
@@ -20,13 +21,15 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <SnackbarProvider>
-                    <ConfirmContextProvider>
-                        <ReactFlowContext>
-                            <App />
-                        </ReactFlowContext>
-                    </ConfirmContextProvider>
-                </SnackbarProvider>
+                <AuthProvider>
+                    <SnackbarProvider>
+                        <ConfirmContextProvider>
+                            <ReactFlowContext>
+                                <App />
+                            </ReactFlowContext>
+                        </ConfirmContextProvider>
+                    </SnackbarProvider>
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     </React.StrictMode>
