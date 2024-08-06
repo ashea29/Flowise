@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Logo from '@/ui-component/extended/Logo'
 import { useAuth } from '@/hooks/useAuth'
+import { escapeHtml } from '@/utils/escapeHtml'
 import colors from '@/assets/scss/_themes-vars.module.scss'
 
 const SignupPage = () => {
@@ -30,7 +31,7 @@ const SignupPage = () => {
             setPasswordsMatch(false)
             return
         }
-        await authenticateWithEmail('SIGNUP', email, password, name)
+        await authenticateWithEmail('SIGNUP', escapeHtml(email), escapeHtml(password), escapeHtml(name))
     }
 
     return (
@@ -45,126 +46,132 @@ const SignupPage = () => {
                 >
                     Create an account
                 </Typography>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    startIcon={<GoogleIcon style={{ backgroundColor: 'inherit' }} />}
-                    fullWidth
-                    disableElevation
-                    onClick={(e) => handleOAuthSignup(e, 'google')}
-                    sx={{
-                        mb: 2,
-                        py: 1.5,
-                        backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
-                        border: '2px solid',
-                        color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
-                        borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
-                        '&:hover': {
-                            backgroundColor: colors.primary200 + ' !important',
-                            color: colors.darkPrimaryDark,
-                            borderColor: colors.primary200,
-                            '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
-                        }
-                    }}
-                >
-                    Sign Up with Google
-                </Button>
-                <Button
-                    variant='contained'
-                    color='secondary'
-                    startIcon={<GitHubIcon style={{ backgroundColor: 'inherit' }} />}
-                    fullWidth
-                    disableElevation
-                    onClick={(e) => handleOAuthSignup(e, 'github')}
-                    sx={{
-                        mb: 4,
-                        py: 1.5,
-                        backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
-                        border: '2px solid',
-                        color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
-                        borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
-                        '&:hover': {
-                            backgroundColor: colors.primary200 + ' !important',
-                            color: colors.darkPrimaryDark,
-                            borderColor: colors.primary200,
-                            '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
-                        }
-                    }}
-                >
-                    Sign Up with GitHub
-                </Button>
-                <Divider
-                    component='div'
-                    role='presentation'
-                    sx={{
-                        mb: 2,
-                        color: customization.isDarkMode ? colors.grey700 : colors.grey500,
-                        width: '100%',
-                        '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
-                    }}
-                >
-                    <Typography>OR</Typography>
-                </Divider>
-                <form onSubmit={(e) => handleEmailSignup(e, email, password, confirmPassword, name)} style={{ width: '100%' }}>
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        label='Name'
-                        autoComplete='name'
-                    />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        label='Email Address'
-                        autoComplete='email'
-                    />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        label='Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type='password'
-                        autoComplete='new-password'
-                    />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        label='Confirm Password'
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        type='password'
-                        autoComplete='new-password'
-                    />
-                    <Button
-                        type='submit'
-                        fullWidth
-                        disableElevation
-                        disabled={!email || !password || !confirmPassword || !passwordsMatch}
-                        variant='contained'
-                        color='primary'
-                        sx={{
-                            mt: 3,
-                            mb: 2,
-                            py: 1.5,
-                            '&:hover': { backgroundColor: colors.primary200 + ' !important', color: colors.darkPrimaryDark }
-                        }}
-                    >
-                        Sign Up
-                    </Button>
-                </form>
+                {authMethod === 'appwrite' && authOptions?.includes('oauth2') && (
+                    <>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            startIcon={<GoogleIcon style={{ backgroundColor: 'inherit' }} />}
+                            fullWidth
+                            disableElevation
+                            onClick={(e) => handleOAuthSignup(e, 'google')}
+                            sx={{
+                                mb: 2,
+                                py: 1.5,
+                                backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
+                                border: '2px solid',
+                                color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
+                                borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
+                                '&:hover': {
+                                    backgroundColor: colors.primary200 + ' !important',
+                                    color: colors.darkPrimaryDark,
+                                    borderColor: colors.primary200,
+                                    '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
+                                }
+                            }}
+                        >
+                            Sign Up with Google
+                        </Button>
+                        <Button
+                            variant='contained'
+                            color='secondary'
+                            startIcon={<GitHubIcon style={{ backgroundColor: 'inherit' }} />}
+                            fullWidth
+                            disableElevation
+                            onClick={(e) => handleOAuthSignup(e, 'github')}
+                            sx={{
+                                mb: 4,
+                                py: 1.5,
+                                backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
+                                border: '2px solid',
+                                color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
+                                borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
+                                '&:hover': {
+                                    backgroundColor: colors.primary200 + ' !important',
+                                    color: colors.darkPrimaryDark,
+                                    borderColor: colors.primary200,
+                                    '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
+                                }
+                            }}
+                        >
+                            Sign Up with GitHub
+                        </Button>
+                        <Divider
+                            component='div'
+                            role='presentation'
+                            sx={{
+                                mb: 2,
+                                color: customization.isDarkMode ? colors.grey700 : colors.grey500,
+                                width: '100%',
+                                '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
+                            }}
+                        >
+                            <Typography>OR</Typography>
+                        </Divider>
+                    </>
+                )}
+                {authMethod === 'appwrite' && authOptions?.includes('email') && (
+                    <form onSubmit={(e) => handleEmailSignup(e, email, password, confirmPassword, name)} style={{ width: '100%' }}>
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            required
+                            fullWidth
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            label='Name'
+                            autoComplete='name'
+                        />
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            required
+                            fullWidth
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            label='Email Address'
+                            autoComplete='email'
+                        />
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            required
+                            fullWidth
+                            label='Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type='password'
+                            autoComplete='new-password'
+                        />
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            required
+                            fullWidth
+                            label='Confirm Password'
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            type='password'
+                            autoComplete='new-password'
+                        />
+                        <Button
+                            type='submit'
+                            fullWidth
+                            disableElevation
+                            disabled={!email || !password || !confirmPassword || !passwordsMatch}
+                            variant='contained'
+                            color='primary'
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                py: 1.5,
+                                '&:hover': { backgroundColor: colors.primary200 + ' !important', color: colors.darkPrimaryDark }
+                            }}
+                        >
+                            Sign Up
+                        </Button>
+                    </form>
+                )}
                 <Typography variant='body2' sx={{ mt: 2 }}>
                     Already have an account?{' '}
                     <Link component={RouterLink} to='/login'>

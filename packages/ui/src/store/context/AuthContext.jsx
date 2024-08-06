@@ -107,13 +107,16 @@ function AuthProvider({ children }) {
      * @param {'LOGIN' | 'SIGNUP'} dispatchType - The type of action to dispatch.
      * @param {string} email - The email address of the user.
      * @param {string} password - The password of the user.
-     * @param {string} name - The name of the user (passed to the `createAccount` function).
+     * @param {string} [name] - The name of the user (passed to the `createAccount` function) (OPTIONAL).
      * @return {Promise<void>} A promise that resolves when the authentication is complete.
      */
     async function authenticateWithEmail(dispatchType, email, password, name) {
         setIsLoading(true)
         try {
-            await createAccount(email, password, name)
+            if (dispatchType === 'SIGNUP') {
+                if (!name) name = email.split('@')[0]
+                await createAccount(email, password, name)
+            }
             await account.createEmailSession(email, password)
             const userData = await account.get()
             dispatch({ type: dispatchType, payload: userData })
