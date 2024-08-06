@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@mui/material/styles'
 import Logo from '@/ui-component/extended/Logo'
 
+// assets
+import colors from '@/assets/scss/_themes-vars.module.scss'
+
 export const AuthLoader = ({ loaderText }) => {
     const customization = useSelector((state) => state.customization)
 
@@ -22,11 +25,18 @@ export const AuthLoader = ({ loaderText }) => {
                 justifyContent: 'center',
                 gap: '2rem',
                 fontSize: '1.5rem',
-                textAlign: 'center'
+                textAlign: 'center',
+                backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper
             }}
         >
             <Logo />
-            <div style={{ fontSize: '1.5rem', marginTop: '2rem', color: customization.isDarkMode ? '#fff' : '#8D51FF' }}>
+            <div
+                style={{
+                    fontSize: '1.5rem',
+                    marginTop: '2rem',
+                    color: customization.isDarkMode ? theme.palette.primary.contrastText : '#8D51FF'
+                }}
+            >
                 {loaderText}...
             </div>
         </div>
