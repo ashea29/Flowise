@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -71,6 +72,8 @@ const Header = ({ handleLeftDrawerToggle }) => {
     const theme = useTheme()
     const navigate = useNavigate()
 
+    const { logout, user, authSystem } = useAuth()
+
     const customization = useSelector((state) => state.customization)
 
     const [isDark, setIsDark] = useState(customization.isDarkMode)
@@ -82,11 +85,16 @@ const Header = ({ handleLeftDrawerToggle }) => {
         localStorage.setItem('isDarkMode', !isDark)
     }
 
-    const signOutClicked = () => {
-        localStorage.removeItem('username')
-        localStorage.removeItem('password')
-        navigate('/', { replace: true })
-        navigate(0)
+    const signOutClicked = async (event) => {
+        event.preventDefault()
+        if (authSystem === 'default' && !user) {
+            localStorage.removeItem('username')
+            localStorage.removeItem('password')
+            navigate('/', { replace: true })
+            navigate(0)
+        } else {
+            await logout()
+        }
     }
 
     return (
@@ -128,7 +136,11 @@ const Header = ({ handleLeftDrawerToggle }) => {
             <Box sx={{ flexGrow: 1 }} />
             <MaterialUISwitch checked={isDark} onChange={changeDarkMode} />
             <Box sx={{ ml: 2 }}></Box>
-            <ProfileSection handleLogout={signOutClicked} username={localStorage.getItem('username') ?? ''} />
+            {authSystem === 'default' && !user && (
+                <ProfileSection handleLogout={signOutClicked} username={localStorage.getItem('username') ?? ''} />
+            )}
+
+            {authSystem === 'appwrite' && user && <ProfileSection handleLogout={signOutClicked} username={user?.name ?? ''} />}
         </>
     )
 }

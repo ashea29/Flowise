@@ -39,6 +39,7 @@ import chatFlowsApi from '@/api/chatflows'
 
 // Hooks
 import useApi from '@/hooks/useApi'
+import { useAuth } from '@/hooks/useAuth'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // ==============================|| PROFILE MENU ||============================== //
@@ -56,6 +57,8 @@ const ProfileSection = ({ username, handleLogout }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
+
+    const { user } = useAuth()
 
     // ==============================|| Snackbar ||============================== //
 
@@ -290,7 +293,7 @@ const ProfileSection = ({ username, handleLogout }) => {
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant='body2'>About Flowise</Typography>} />
                                                 </ListItemButton>
-                                                {localStorage.getItem('username') && localStorage.getItem('password') && (
+                                                {((localStorage.getItem('username') && localStorage.getItem('password')) || user) && (
                                                     <ListItemButton
                                                         sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                         onClick={handleLogout}

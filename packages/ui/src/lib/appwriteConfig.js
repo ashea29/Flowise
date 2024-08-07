@@ -2,8 +2,8 @@
 import { Client, Account } from 'appwrite'
 
 const client = new Client()
-    .setEndpoint('https://cloud.appwrite.io/v1') // API Endpoint
-    .setProject('66abe7c20017d2b09ddd') // project ID
+    .setEndpoint('<appwrite-api-endpoint>') // API Endpoint
+    .setProject('<appwrite-project-id>') // project ID
 
 const account = new Account(client)
 
