@@ -42,9 +42,15 @@ const SignupPage = () => {
                     variant='h1'
                     component='h1'
                     gutterBottom
-                    sx={{ mt: 7, mb: 3, color: customization.isDarkMode ? colors.grey300 : colors.darkPrimaryDark }}
+                    sx={{
+                        mt: 7,
+                        mb: 4,
+                        color: customization.isDarkMode ? colors.grey300 : '#8f54ff',
+                        fontWeight: 200,
+                        letterSpacing: '0.15rem'
+                    }}
                 >
-                    Create an account
+                    Create Account
                 </Typography>
                 {authSystem === 'appwrite' && authOptions?.includes('oauth2') && (
                     <>
@@ -60,13 +66,13 @@ const SignupPage = () => {
                                 py: 1.5,
                                 backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
                                 border: '2px solid',
-                                color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
-                                borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
+                                color: customization.isDarkMode ? colors.grey300 : '#8f54ff',
+                                borderColor: customization.isDarkMode ? colors.grey700 : '#8f54ff',
                                 '&:hover': {
-                                    backgroundColor: colors.primary200 + ' !important',
-                                    color: colors.darkPrimaryDark,
-                                    borderColor: colors.primary200,
-                                    '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
+                                    backgroundColor: '#7e3aff',
+                                    borderColor: '#7e3aff',
+                                    color: customization.isDarkMode ? colors.grey300 : '#fff',
+                                    '& .MuiSvgIcon-root': { fill: customization.isDarkMode ? colors.grey300 : '#fff' }
                                 }
                             }}
                         >
@@ -84,13 +90,13 @@ const SignupPage = () => {
                                 py: 1.5,
                                 backgroundColor: customization.isDarkMode ? colors.darkPaper : colors.paper,
                                 border: '2px solid',
-                                color: customization.isDarkMode ? colors.grey300 : colors.primaryMain,
-                                borderColor: customization.isDarkMode ? colors.grey700 : colors.primaryMain,
+                                color: customization.isDarkMode ? colors.grey300 : '#8f54ff',
+                                borderColor: customization.isDarkMode ? colors.grey700 : '#8f54ff',
                                 '&:hover': {
-                                    backgroundColor: colors.primary200 + ' !important',
-                                    color: colors.darkPrimaryDark,
-                                    borderColor: colors.primary200,
-                                    '& .MuiSvgIcon-root': { fill: colors.darkPrimaryDark }
+                                    backgroundColor: '#7e3aff',
+                                    borderColor: '#7e3aff',
+                                    color: customization.isDarkMode ? colors.grey300 : '#fff',
+                                    '& .MuiSvgIcon-root': { fill: customization.isDarkMode ? colors.grey300 : '#fff' }
                                 }
                             }}
                         >
@@ -121,6 +127,7 @@ const SignupPage = () => {
                             onChange={(e) => setName(e.target.value)}
                             label='Name'
                             autoComplete='name'
+                            sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <TextField
                             variant='outlined'
@@ -131,6 +138,7 @@ const SignupPage = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             label='Email Address'
                             autoComplete='email'
+                            sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <TextField
                             variant='outlined'
@@ -142,6 +150,7 @@ const SignupPage = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             type='password'
                             autoComplete='new-password'
+                            sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <TextField
                             variant='outlined'
@@ -153,6 +162,7 @@ const SignupPage = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             type='password'
                             autoComplete='new-password'
+                            sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <Button
                             type='submit'
@@ -164,8 +174,21 @@ const SignupPage = () => {
                             sx={{
                                 mt: 3,
                                 mb: 2,
-                                py: 1.5,
-                                '&:hover': { backgroundColor: colors.primary200 + ' !important', color: colors.darkPrimaryDark }
+                                py: 1.25,
+                                fontSize: '1rem',
+                                border: '2px solid',
+                                backgroundColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
+                                borderColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
+                                color: colors.grey300,
+                                '&:hover': {
+                                    backgroundColor: '#7e3aff',
+                                    borderColor: '#7e3aff'
+                                },
+                                '&:disabled': {
+                                    backgroundColor: customization.isDarkMode ? 'rgba(110, 33, 255, 0.52)' : 'rgba(0, 0, 0, 0.12)',
+                                    color: customization.isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.26)',
+                                    borderColor: 'rgba(0, 0, 0, 0.02)'
+                                }
                             }}
                         >
                             Sign Up
@@ -174,7 +197,16 @@ const SignupPage = () => {
                 )}
                 <Typography variant='body2' sx={{ mt: 2 }}>
                     Already have an account?{' '}
-                    <Link component={RouterLink} to='/login'>
+                    <Link
+                        component={RouterLink}
+                        to='/login'
+                        sx={{
+                            ml: 0.5,
+                            color: customization.isDarkMode ? '#9c68ff' : '#8f54ff',
+                            textDecoration: 'none',
+                            '&:hover': { textDecoration: 'underline' }
+                        }}
+                    >
                         Sign In
                     </Link>
                 </Typography>
