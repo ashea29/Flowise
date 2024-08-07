@@ -28,8 +28,8 @@ const AuthContext = createContext()
  * @type {AuthContextInitialState}
  */
 const initialState = {
-    authSystem: 'default',
-    authOptions: [],
+    authSystem: 'appwrite',
+    authOptions: ['oauth2', 'email'],
     user: null
 }
 
