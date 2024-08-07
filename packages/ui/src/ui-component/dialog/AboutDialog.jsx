@@ -5,22 +5,27 @@ import { Dialog, DialogContent, DialogTitle, TableContainer, Table, TableHead, T
 import moment from 'moment'
 import axios from 'axios'
 import { baseURL } from '@/store/constant'
+import { useAuth } from '@/hooks/useAuth'
 
 const AboutDialog = ({ show, onCancel }) => {
     const portalElement = document.getElementById('portal')
 
     const [data, setData] = useState({})
 
+    const { user, authSystem } = useAuth()
+
     useEffect(() => {
         if (show) {
-            const username = localStorage.getItem('username')
-            const password = localStorage.getItem('password')
+            if (authSystem === 'default' && !user) {
+                const username = localStorage.getItem('username')
+                const password = localStorage.getItem('password')
 
-            const config = {}
-            if (username && password) {
-                config.auth = {
-                    username,
-                    password
+                const config = {}
+                if (username && password) {
+                    config.auth = {
+                        username,
+                        password
+                    }
                 }
             }
             const latestReleaseReq = axios.get('https://api.github.com/repos/FlowiseAI/Flowise/releases/latest')

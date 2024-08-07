@@ -22,6 +22,7 @@ import chatflowsApi from '@/api/chatflows'
 
 // Hooks
 import useApi from '@/hooks/useApi'
+import { useAuth } from '@/hooks/useAuth'
 
 // const
 import { baseURL } from '@/store/constant'
@@ -34,6 +35,8 @@ import { IconPlus, IconLayoutGrid, IconList } from '@tabler/icons-react'
 const Chatflows = () => {
     const navigate = useNavigate()
     const theme = useTheme()
+
+    const { user, authSystem } = useAuth()
 
     const [isLoading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -85,16 +88,20 @@ const Chatflows = () => {
     useEffect(() => {
         if (getAllChatflowsApi.error) {
             if (getAllChatflowsApi.error?.response?.status === 401) {
-                setLoginDialogProps({
-                    title: 'Login',
-                    confirmButtonName: 'Login'
-                })
-                setLoginDialogOpen(true)
+                if (authSystem === 'default' && !user) {
+                    setLoginDialogProps({
+                        title: 'Login',
+                        confirmButtonName: 'Login'
+                    })
+                    setLoginDialogOpen(true)
+                } else {
+                    setError(getAllChatflowsApi.error)
+                }
             } else {
                 setError(getAllChatflowsApi.error)
             }
         }
-    }, [getAllChatflowsApi.error])
+    }, [getAllChatflowsApi.error, user, authSystem])
 
     useEffect(() => {
         setLoading(getAllChatflowsApi.loading)

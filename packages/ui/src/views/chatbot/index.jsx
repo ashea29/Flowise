@@ -10,6 +10,7 @@ import chatflowsApi from '@/api/chatflows'
 
 // Hooks
 import useApi from '@/hooks/useApi'
+import { useAuth } from '@/hooks/useAuth'
 
 //Const
 import { baseURL } from '@/store/constant'
@@ -20,6 +21,8 @@ const ChatbotFull = () => {
     const URLpath = document.location.pathname.toString().split('/')
     const chatflowId = URLpath[URLpath.length - 1] === 'chatbot' ? '' : URLpath[URLpath.length - 1]
     const navigate = useNavigate()
+
+    const { user, authSystem } = useAuth()
 
     const [chatflow, setChatflow] = useState(null)
     const [chatbotTheme, setChatbotTheme] = useState({})
@@ -49,11 +52,13 @@ const ChatbotFull = () => {
                 if (localStorage.getItem('username') && localStorage.getItem('password')) {
                     getSpecificChatflowApi.request(chatflowId)
                 } else {
-                    setLoginDialogProps({
-                        title: 'Login',
-                        confirmButtonName: 'Login'
-                    })
-                    setLoginDialogOpen(true)
+                    if (authSystem === 'default' && !user) {
+                        setLoginDialogProps({
+                            title: 'Login',
+                            confirmButtonName: 'Login'
+                        })
+                        setLoginDialogOpen(true)
+                    }
                 }
             }
         }

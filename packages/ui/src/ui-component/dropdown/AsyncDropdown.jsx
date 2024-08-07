@@ -11,6 +11,9 @@ import { styled } from '@mui/material/styles'
 // API
 import credentialsApi from '@/api/credentials'
 
+// Hooks
+import { useAuth } from '@/hooks/useAuth'
+
 // const
 import { baseURL } from '@/store/constant'
 
@@ -26,24 +29,38 @@ const StyledPopper = styled(Popper)({
     }
 })
 
-const fetchList = async ({ name, nodeData }) => {
+const fetchList = async ({ name, nodeData, authSystem, user }) => {
     const loadMethod = nodeData.inputParams.find((param) => param.name === name)?.loadMethod
-    const username = localStorage.getItem('username')
-    const password = localStorage.getItem('password')
+    if (authSystem === 'default' && !user) {
+        const username = localStorage.getItem('username')
+        const password = localStorage.getItem('password')
 
-    let lists = await axios
-        .post(
-            `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
-            { ...nodeData, loadMethod },
-            { auth: username && password ? { username, password } : undefined }
-        )
-        .then(async function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-            console.error(error)
-        })
-    return lists
+        let lists = await axios
+            .post(
+                `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
+                { ...nodeData, loadMethod },
+                { auth: username && password ? { username, password } : undefined }
+            )
+            .then(async function (response) {
+                return response.data
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+
+        return lists
+    } else {
+        let lists = await axios
+            .post(`${baseURL}/api/v1/node-load-method/${nodeData.name}`, { ...nodeData, loadMethod }, { auth: undefined })
+            .then(async function (response) {
+                return response.data
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+
+        return lists
+    }
 }
 
 export const AsyncDropdown = ({
@@ -66,6 +83,8 @@ export const AsyncDropdown = ({
     const getDefaultOptionValue = () => ''
     const addNewOption = [{ label: '- Create New -', name: '-create-' }]
     let [internalValue, setInternalValue] = useState(value ?? 'choose an option')
+
+    const { user, authSystem } = useAuth()
 
     const fetchCredentialList = async () => {
         try {
@@ -96,7 +115,7 @@ export const AsyncDropdown = ({
         setLoading(true)
         ;(async () => {
             const fetchData = async () => {
-                let response = credentialNames.length ? await fetchCredentialList() : await fetchList({ name, nodeData })
+                let response = credentialNames.length ? await fetchCredentialList() : await fetchList({ name, nodeData, authSystem, user })
                 if (isCreateNewOption) setOptions([...response, ...addNewOption])
                 else setOptions([...response])
                 setLoading(false)

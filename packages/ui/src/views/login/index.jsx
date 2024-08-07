@@ -12,7 +12,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const customization = useSelector((state) => state.customization)
-    const { authenticateWithProvider, authenticateWithEmail, authMethod, authOptions } = useAuth()
+    const { authenticateWithProvider, authenticateWithEmail, authSystem, authOptions } = useAuth()
 
     // Handle OAuth login (Google or GitHub)
     const handleOAuthLogin = async (event, provider) => {
@@ -33,7 +33,7 @@ const LoginPage = () => {
                 <Typography variant='h1' component='h1' gutterBottom sx={{ mt: 7, mb: 3 }}>
                     Sign In
                 </Typography>
-                {authMethod === 'appwrite' && authOptions?.includes('oauth2') && (
+                {authSystem === 'appwrite' && authOptions?.includes('oauth2') && (
                     <>
                         <Button
                             variant='contained'
@@ -95,7 +95,7 @@ const LoginPage = () => {
                         </Divider>
                     </>
                 )}
-                {authMethod === 'appwrite' && authOptions?.includes('email') && (
+                {authSystem === 'appwrite' && authOptions?.includes('email') && (
                     <form onSubmit={(e) => handleEmailLogin(e, email, password)} style={{ width: '100%' }}>
                         <TextField
                             type='email'

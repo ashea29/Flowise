@@ -7,12 +7,12 @@ import { useAuth } from '@/hooks/useAuth'
  * @return {JSX.Element} The rendered view or component.
  */
 function ProtectedRoute() {
-    const { user, authMethod } = useAuth()
+    const { user, authSystem } = useAuth()
 
     if (user) {
         return <Outlet />
     } else {
-        return authMethod === 'appwrite' ? <Navigate to='/login' /> : <Outlet />
+        return authSystem === 'appwrite' ? <Navigate to='/login' /> : <Outlet />
     }
 }
 

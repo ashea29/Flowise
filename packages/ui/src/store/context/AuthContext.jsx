@@ -19,7 +19,7 @@ const AuthContext = createContext()
  * @property {AuthOptions[]} authOptions - The authentication options to use. Currently, only 'oauth2' and 'email' are supported.
  *
  * NOTE: For things to work properly, one or the other (or both) must be explicitly specified.
- * @property {'appwrite' | 'default'} authMethod - The method of authentication to use (currently, only 'appwrite' and 'default' are supported).
+ * @property {'appwrite' | 'default'} authSystem - The method of authentication to use (currently, only 'appwrite' and 'default' are supported).
  *
  * NOTE: If you select 'appwrite', Flowise will use Appwrite's authentication via the functions in the AuthProvider below. If you select 'default', the default Flowise authentication will be used ('FLOWISE_USERNAME' and 'FLOWISE_PASSWORD' environment variables - if defined).
  */
@@ -28,7 +28,7 @@ const AuthContext = createContext()
  * @type {AuthContextInitialState}
  */
 const initialState = {
-    authMethod: 'default',
+    authSystem: 'default',
     authOptions: [],
     user: null
 }
@@ -146,12 +146,12 @@ function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        if (state.authMethod === 'appwrite') {
+        if (state.authSystem === 'appwrite') {
             checkIfUserSessionExists()
         } else {
             setIsLoading(false)
         }
-    }, [state.authMethod])
+    }, [state.authSystem])
 
     return (
         <AuthContext.Provider

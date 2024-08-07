@@ -15,7 +15,7 @@ const SignupPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [passwordsMatch, setPasswordsMatch] = useState(false)
     const customization = useSelector((state) => state.customization)
-    const { authenticateWithProvider, authenticateWithEmail } = useAuth()
+    const { authenticateWithProvider, authenticateWithEmail, authSystem, authOptions } = useAuth()
 
     // Handle OAuth signup (Google or GitHub)
     const handleOAuthSignup = async (event, provider) => {
@@ -46,7 +46,7 @@ const SignupPage = () => {
                 >
                     Create an account
                 </Typography>
-                {authMethod === 'appwrite' && authOptions?.includes('oauth2') && (
+                {authSystem === 'appwrite' && authOptions?.includes('oauth2') && (
                     <>
                         <Button
                             variant='contained'
@@ -110,7 +110,7 @@ const SignupPage = () => {
                         </Divider>
                     </>
                 )}
-                {authMethod === 'appwrite' && authOptions?.includes('email') && (
+                {authSystem === 'appwrite' && authOptions?.includes('email') && (
                     <form onSubmit={(e) => handleEmailSignup(e, email, password, confirmPassword, name)} style={{ width: '100%' }}>
                         <TextField
                             variant='outlined'
