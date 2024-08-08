@@ -36,9 +36,9 @@ const initialState = {
 function authReducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
-            return { user: action.payload }
+            return { ...state, user: action.payload }
         case 'SIGNUP':
-            return { user: action.payload }
+            return { ...state, user: action.payload }
         case 'LOGOUT':
             return initialState
         default:
@@ -119,7 +119,7 @@ function AuthProvider({ children }) {
                 if (!name) name = email.split('@')[0]
                 await createAccount(email, password, name)
             }
-            await account.createEmailSession(email, password)
+            await account.createEmailPasswordSession(email, password)
             const userData = await account.get()
             console.log('userData (authenticateWithEmail): ')
             console.log(userData)

@@ -13,9 +13,16 @@ const SignupPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [passwordsMatch, setPasswordsMatch] = useState(false)
+    const [passwordsMatch, setPasswordsMatch] = useState(true)
+    const [passwordsTouched, setPasswordsTouched] = useState(false)
     const customization = useSelector((state) => state.customization)
     const { authenticateWithProvider, authenticateWithEmail, authSystem, authOptions } = useAuth()
+
+    // Handle password match
+    const handleBlur = () => {
+        setPasswordsTouched(true)
+        setPasswordsMatch(password === confirmPassword)
+    }
 
     // Handle OAuth signup (Google or GitHub)
     const handleOAuthSignup = async (event, provider) => {
@@ -162,13 +169,16 @@ const SignupPage = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             type='password'
                             autoComplete='new-password'
+                            onBlur={handleBlur}
+                            error={!passwordsMatch}
+                            helperText={!passwordsMatch ? 'Passwords do not match' : ''}
                             sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <Button
                             type='submit'
                             fullWidth
                             disableElevation
-                            disabled={!email || !password || !confirmPassword || !passwordsMatch}
+                            disabled={!email || !password || !confirmPassword || (passwordsTouched && !passwordsMatch)}
                             variant='contained'
                             color='primary'
                             sx={{
@@ -179,7 +189,7 @@ const SignupPage = () => {
                                 border: '2px solid',
                                 backgroundColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
                                 borderColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
-                                color: colors.grey300,
+                                color: customization.isDarkMode ? colors.grey300 : '#fff',
                                 '&:hover': {
                                     backgroundColor: '#7e3aff',
                                     borderColor: '#7e3aff'

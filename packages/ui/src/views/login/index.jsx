@@ -149,7 +149,7 @@ const LoginPage = () => {
                                 backgroundColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
                                 border: '2px solid',
                                 borderColor: customization.isDarkMode ? '#6e21ff' : '#8f54ff',
-                                color: colors.grey300,
+                                color: customization.isDarkMode ? colors.grey300 : '#fff',
                                 '&:hover': {
                                     backgroundColor: '#7e3aff',
                                     borderColor: '#7e3aff'
