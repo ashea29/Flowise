@@ -75,10 +75,9 @@ function AuthProvider({ children }) {
     async function authenticateWithProvider(dispatchType, provider) {
         setIsLoading(true)
         try {
-            await account.createOAuth2Session(provider, 'http://localhost:8080/', 'http://localhost:8080/login')
+            account.createOAuth2Session(provider, 'http://localhost:8080/', 'http://localhost:8080/login')
             const userData = await account.get()
-            console.log('userData (authenticateWithProvider): ')
-            console.log(userData)
+
             dispatch({ type: dispatchType, payload: userData })
         } catch (error) {
             console.error(error)
@@ -121,8 +120,7 @@ function AuthProvider({ children }) {
             }
             await account.createEmailPasswordSession(email, password)
             const userData = await account.get()
-            console.log('userData (authenticateWithEmail): ')
-            console.log(userData)
+
             dispatch({ type: dispatchType, payload: userData })
 
             navigate('/', { replace: true })
