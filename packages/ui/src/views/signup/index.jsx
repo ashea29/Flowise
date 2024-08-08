@@ -13,15 +13,15 @@ const SignupPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [passwordsMatch, setPasswordsMatch] = useState(true)
+    const [passwordsMatch, setPasswordsMatch] = useState(false)
     const [passwordsTouched, setPasswordsTouched] = useState(false)
     const customization = useSelector((state) => state.customization)
     const { authenticateWithProvider, authenticateWithEmail, authSystem, authOptions } = useAuth()
 
     // Handle password match
     const handleBlur = () => {
-        setPasswordsTouched(true)
         setPasswordsMatch(password === confirmPassword)
+        setPasswordsTouched(true)
     }
 
     // Handle OAuth signup (Google or GitHub)
@@ -109,19 +109,21 @@ const SignupPage = () => {
                         >
                             Sign Up with GitHub
                         </Button>
-                        <Divider
-                            component='div'
-                            role='presentation'
-                            sx={{
-                                mb: 2,
-                                color: customization.isDarkMode ? colors.grey700 : colors.grey500,
-                                width: '100%',
-                                '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
-                            }}
-                        >
-                            <Typography>OR</Typography>
-                        </Divider>
                     </>
+                )}
+                {authSystem === 'appwrite' && authOptions?.includes('oauth2') && authOptions?.includes('email') && (
+                    <Divider
+                        component='div'
+                        role='presentation'
+                        sx={{
+                            mb: 2,
+                            color: customization.isDarkMode ? colors.grey700 : colors.grey500,
+                            width: '100%',
+                            '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
+                        }}
+                    >
+                        <Typography>OR</Typography>
+                    </Divider>
                 )}
                 {authSystem === 'appwrite' && authOptions?.includes('email') && (
                     <form onSubmit={(e) => handleEmailSignup(e, email, password, confirmPassword, name)} style={{ width: '100%' }}>
@@ -170,15 +172,15 @@ const SignupPage = () => {
                             type='password'
                             autoComplete='new-password'
                             onBlur={handleBlur}
-                            error={!passwordsMatch}
-                            helperText={!passwordsMatch ? 'Passwords do not match' : ''}
+                            error={passwordsTouched && !passwordsMatch}
+                            helperText={passwordsTouched && !passwordsMatch ? 'Passwords do not match' : ''}
                             sx={{ '& .MuiOutlinedInput-notchedOutline': { borderRadius: '0.25rem' } }}
                         />
                         <Button
                             type='submit'
                             fullWidth
                             disableElevation
-                            disabled={!email || !password || !confirmPassword || (passwordsTouched && !passwordsMatch)}
+                            disabled={!email || !password || !confirmPassword || !passwordsMatch}
                             variant='contained'
                             color='primary'
                             sx={{

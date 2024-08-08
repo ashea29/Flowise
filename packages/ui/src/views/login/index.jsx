@@ -94,19 +94,21 @@ const LoginPage = () => {
                         >
                             Sign in with GitHub
                         </Button>
-                        <Divider
-                            component='div'
-                            role='presentation'
-                            sx={{
-                                mb: 2,
-                                color: customization.isDarkMode ? colors.grey700 : colors.grey500,
-                                width: '100%',
-                                '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
-                            }}
-                        >
-                            <Typography>OR</Typography>
-                        </Divider>
                     </>
+                )}
+                {authSystem === 'appwrite' && authOptions?.includes('oauth2') && authOptions?.includes('email') && (
+                    <Divider
+                        component='div'
+                        role='presentation'
+                        sx={{
+                            mb: 2,
+                            color: customization.isDarkMode ? colors.grey700 : colors.grey500,
+                            width: '100%',
+                            '&::before, &::after': { borderTopColor: customization.isDarkMode ? colors.grey700 : colors.grey300 }
+                        }}
+                    >
+                        <Typography>OR</Typography>
+                    </Divider>
                 )}
                 {authSystem === 'appwrite' && authOptions?.includes('email') && (
                     <form onSubmit={(e) => handleEmailLogin(e, email, password)} style={{ width: '100%' }}>
