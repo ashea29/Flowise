@@ -53,7 +53,11 @@ const fetchList = async ({ name, nodeData, authSystem, user }) => {
         return lists
     } else {
         let lists = await axios
-            .post(`${baseURL}/api/v1/node-load-method/${nodeData.name}`, { ...nodeData, loadMethod }, { auth: undefined })
+            .post(
+                `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
+                { ...nodeData, loadMethod },
+                { auth: undefined, headers: { 'Content-type': 'application/json', 'x-request-from': 'internal' } }
+            )
             .then(async function (response) {
                 return response.data
             })
