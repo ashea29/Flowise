@@ -39,7 +39,10 @@ const fetchList = async ({ name, nodeData, authSystem, user }) => {
             .post(
                 `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
                 { ...nodeData, loadMethod },
-                { auth: username && password ? { username, password } : undefined }
+                {
+                    auth: username && password ? { username, password } : undefined,
+                    headers: { 'Content-type': 'application/json', 'x-request-from': 'internal' }
+                }
             )
             .then(async function (response) {
                 return response.data
@@ -47,7 +50,6 @@ const fetchList = async ({ name, nodeData, authSystem, user }) => {
             .catch(function (error) {
                 console.error(error)
             })
-
         return lists
     } else {
         let lists = await axios
